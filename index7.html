@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page App with 5 Routes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .content {
+            padding: 3rem 2rem;
+            min-height: calc(100vh - 100px);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .about-content {
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><a href="#home" class="nav-link active" data-route="home">Home</a></li>
+                <li><a href="#about" class="nav-link" data-route="about">About</a></li>
+                <li><a href="#services" class="nav-link" data-route="services">Services</a></li>
+                <li><a href="#portfolio" class="nav-link" data-route="portfolio">Portfolio</a></li>
+                <li><a href="#contact" class="nav-link" data-route="contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <!-- Home Page -->
+            <div id="home" class="page active">
+                <div class="card">
+                    <h1>Welcome to Our Amazing Website</h1>
+                    <p>Discover innovation and excellence in every project we create. We're passionate about delivering exceptional digital experiences that make a difference.</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Modern Design</h3>
+                        <p>Beautiful, responsive designs that work perfectly on all devices</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Fast Performance</h3>
+                        <p>Optimized for speed and efficiency to provide the best user experience</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Innovative Solutions</h3>
+                        <p>Cutting-edge technology solutions tailored to your specific needs</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Page -->
+            <div id="about" class="page">
+                <div class="card">
+                    <h1>About Us</h1>
+                    <div class="about-content">
+                        <p>We are a team of passionate developers and designers dedicated to creating exceptional digital experiences. Our journey began with a simple mission: to bridge the gap between innovative technology and user-friendly design.</p>
+                        
+                        <h2>Our Mission</h2>
+                        <p>To empower businesses and individuals through cutting-edge web solutions that are both beautiful and functional. We believe that great design should be accessible to everyone.</p>
+                        
+                        <h2>Our Values</h2>
+                        <ul style="margin-left: 2rem; margin-top: 1rem; line-height: 1.8;">
+                            <li>Innovation in everything we do</li>
+                            <li>Quality that exceeds expectations</li>
+                            <li>Collaboration and transparency</li>
+                            <li>Continuous learning and improvement</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Page -->
+            <div id="services" class="page">
+                <div class="card">
+                    <h1>Our Services</h1>
+                    <p>We offer a comprehensive range of digital services to help your business thrive in the modern world.</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="card">
+                        <h3>Web Development</h3>
+                        <p>Custom websites and web applications built with the latest technologies and best practices.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Mobile Apps</h3>
+                        <p>Native and cross-platform mobile applications that engage users and drive business growth.</p>
+                    </div>
+                    <div class="card">
+                        <h3>UI/UX Design</h3>
+                        <p>User-centered design solutions that create intuitive and memorable digital experiences.</p>
+                    </div>
+                    <div class="card">
+                        <h3>E-commerce</h3>
+                        <p>Complete online store solutions with secure payment processing and inventory management.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Digital Marketing</h3>
+                        <p>SEO, social media marketing, and digital advertising to boost your online presence.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Consulting</h3>
+                        <p>Strategic technology consulting to help you make informed decisions about your digital future.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Page -->
+            <div id="portfolio" class="page">
+                <div class="card">
+                    <h1>Our Portfolio</h1>
+                    <p>Take a look at some of our recent projects and success stories.</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="card">
+                        <h3>TechStartup Dashboard</h3>
+                        <p>A comprehensive analytics dashboard for a growing tech startup, featuring real-time data visualization and user management.</p>
+                        <div style="margin-top: 1rem; color: #667eea; font-weight: 500;">React • Node.js • MongoDB</div>
+                    </div>
+                    <div class="card">
+                        <h3>E-commerce Platform</h3>
+                        <p>Full-featured online marketplace with advanced filtering, secure payments, and inventory management.</p>
+                        <div style="margin-top: 1rem; color: #667eea; font-weight: 500;">Vue.js • Laravel • MySQL</div>
+                    </div>
+                    <div class="card">
+                        <h3>Mobile Fitness App</h3>
+                        <p>Cross-platform fitness tracking app with workout plans, progress tracking, and social features.</p>
+                        <div style="margin-top: 1rem; color: #667eea; font-weight: 500;">React Native • Firebase</div>
+                    </div>
+                    <div class="card">
+                        <h3>Restaurant Website</h3>
+                        <p>Modern restaurant website with online reservations, menu management, and customer reviews.</p>
+                        <div style="margin-top: 1rem; color: #667eea; font-weight: 500;">HTML5 • CSS3 • JavaScript</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Page -->
+            <div id="contact" class="page">
+                <div class="card">
+                    <h1>Get In Touch</h1>
+                    <p>Ready to start your next project? We'd love to hear from you!</p>
+                    
+                    <form class="contact-form" style="margin-top: 2rem;">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+
+                <div style="margin-top: 3rem; text-align: center;">
+                    <h2>Other Ways to Reach Us</h2>
+                    <div class="feature-grid" style="margin-top: 2rem;">
+                        <div class="feature-card">
+                            <h3>📧 Email</h3>
+                            <p>hello@company.com</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>📱 Phone</h3>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>📍 Address</h3>
+                            <p>123 Business St<br>City, State 12345</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple router implementation
+        class SimpleRouter {
+            constructor() {
+                this.routes = {};
+                this.currentRoute = 'home';
+                this.init();
+            }
+
+            init() {
+                // Handle navigation clicks
+                document.addEventListener('click', (e) => {
+                    if (e.target.matches('.nav-link')) {
+                        e.preventDefault();
+                        const route = e.target.dataset.route;
+                        this.navigateTo(route);
+                    }
+                });
+
+                // Handle browser back/forward buttons
+                window.addEventListener('popstate', (e) => {
+                    const route = e.state ? e.state.route : 'home';
+                    this.showPage(route);
+                });
+
+                // Handle initial page load
+                const hash = window.location.hash.slice(1) || 'home';
+                this.navigateTo(hash, false);
+
+                // Handle contact form submission
+                const form = document.querySelector('.contact-form');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Thank you for your message! We\'ll get back to you soon.');
+                    form.reset();
+                });
+            }
+
+            navigateTo(route, pushState = true) {
+                if (pushState) {
+                    window.history.pushState({ route }, '', `#${route}`);
+                }
+                this.showPage(route);
+            }
+
+            showPage(route) {
+                // Hide all pages
+                const pages = document.querySelectorAll('.page');
+                pages.forEach(page => page.classList.remove('active'));
+
+                // Show target page
+                const targetPage = document.getElementById(route);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                    this.currentRoute = route;
+                }
+
+                // Update navigation
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                const activeLink = document.querySelector(`[data-route="${route}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+
+                // Update page title
+                const titles = {
+                    home: 'Home - Amazing Website',
+                    about: 'About Us - Amazing Website',
+                    services: 'Our Services - Amazing Website',
+                    portfolio: 'Portfolio - Amazing Website',
+                    contact: 'Contact Us - Amazing Website'
+                };
+                document.title = titles[route] || 'Amazing Website';
+            }
+        }
+
+        // Initialize the router when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new SimpleRouter();
+        });
+    </script>
+</body>
+</html>
